@@ -1,8 +1,8 @@
 ﻿using System.Windows.Input;
 
-namespace NoMouseOnlyKeyboard.Services.Interfaces
+namespace NoMouseOnlyKeyboard.Interfaces
 {
-    internal interface IKeyMapping
+    public interface IKeyMapping
     {
         Action GetActionFromKey(Key key);
         bool HasKeyMappingForKey(Key key);

@@ -1,5 +1,6 @@
-﻿using NoMouseOnlyKeyboard.Services.Interfaces;
+﻿using NoMouseOnlyKeyboard.Interfaces;
 using System.Windows.Input;
+using Action = NoMouseOnlyKeyboard.Interfaces.Action;
 
 namespace NoMouseOnlyKeyboard.Services
 {
@@ -13,12 +14,12 @@ namespace NoMouseOnlyKeyboard.Services
             { Key.F16, Action.MouseMoveRight },
             { Key.F17, Action.MouseLeftButton },
             { Key.F18, Action.MouseRightButton },
-            { Key.F19, Action.MouseMiddleButton },
+            { Key.F24, Action.MouseMiddleButton },
             { Key.F20, Action.MouseDoubleClick },
             { Key.F21, Action.MouseScrollUp },
             { Key.F22, Action.MouseScrollDown },
             { Key.F23, Action.ShowUINavigationLabels },
-            { Key.F24, Action.ShowGridNavigationLabels },
+            { Key.F19, Action.ShowGridNavigationLabels },
             { Key.LeftShift, Action.MouseSpeedUp },
             { Key.RightShift, Action.MouseSpeedUp },
             { Key.LeftCtrl, Action.MouseSpeedDown },

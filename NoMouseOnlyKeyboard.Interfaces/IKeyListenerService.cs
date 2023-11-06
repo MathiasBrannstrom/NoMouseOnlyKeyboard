@@ -1,11 +1,11 @@
 ﻿using System.Windows.Input;
 using Utilities;
 
-namespace NoMouseOnlyKeyboard.Services.Interfaces
+namespace NoMouseOnlyKeyboard.Interfaces
 {
     public delegate void KeyEvent(Key key, ButtonEvent buttonEvent);
 
-    internal interface IKeyListenerService
+    public interface IKeyListenerService
     {
         Dictionary<Action, ValueHolder<bool>> IsActionKeyHeld { get; }
         void Dispose();

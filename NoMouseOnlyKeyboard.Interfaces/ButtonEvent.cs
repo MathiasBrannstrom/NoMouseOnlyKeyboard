@@ -1,4 +1,4 @@
-﻿namespace NoMouseOnlyKeyboard.Services
+﻿namespace NoMouseOnlyKeyboard.Interfaces
 {
     public enum ButtonEvent
     {

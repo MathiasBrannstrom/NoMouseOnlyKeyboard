@@ -1,7 +1,8 @@
 using NoMouseOnlyKeyboard;
+using NoMouseOnlyKeyboard.Interfaces;
 using NoMouseOnlyKeyboard.Services;
 using NoMouseOnlyKeyboard.Services.ActionHandling;
-using NoMouseOnlyKeyboard.Services.Interfaces;
+using UIImplementationWindowsWPF;
 
 IHost host = Host.CreateDefaultBuilder(args)
     .ConfigureServices(services =>
@@ -9,7 +10,7 @@ IHost host = Host.CreateDefaultBuilder(args)
         services.AddHostedService<Worker>();
         services.AddSingleton<IKeyMapping, DefaultKeyMapping>();
         services.AddSingleton<IKeyListenerService,  KeyListenerUsingLoopService>();
-        
+        services.AddSingleton<IUIService, UIService>();
         // Mouse action handler services
         services.AddSingleton<HandlerServices>();
     })

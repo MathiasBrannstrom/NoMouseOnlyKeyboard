@@ -14,6 +14,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\NoMouseOnlyKeyboard.Interfaces\NoMouseOnlyKeyboard.Interfaces.csproj" />
+    <ProjectReference Include="..\UIImplementationWindowsWPF\UIImplementationWindowsWPF.csproj" />
     <ProjectReference Include="..\Utilities\Utilities.csproj" />
     <ProjectReference Include="..\WindowsAPI\WindowsAPI.csproj" />
   </ItemGroup>

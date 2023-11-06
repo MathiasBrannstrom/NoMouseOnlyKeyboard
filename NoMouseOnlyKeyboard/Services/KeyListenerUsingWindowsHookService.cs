@@ -1,9 +1,10 @@
 ﻿using System.Runtime.InteropServices;
 using System.Diagnostics;
 using static NoMouseOnlyKeyboard.WindowsAPI.User32;
-using NoMouseOnlyKeyboard.Services.Interfaces;
 using Utilities;
 using System.Windows.Input;
+using NoMouseOnlyKeyboard.Interfaces;
+using Action = NoMouseOnlyKeyboard.Interfaces.Action;
 
 namespace NoMouseOnlyKeyboard.Services
 {

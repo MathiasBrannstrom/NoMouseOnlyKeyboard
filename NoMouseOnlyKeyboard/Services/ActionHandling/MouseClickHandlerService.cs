@@ -1,7 +1,8 @@
-﻿using NoMouseOnlyKeyboard.Services.Interfaces;
-using NoMouseOnlyKeyboard.WindowsAPI;
+﻿using NoMouseOnlyKeyboard.WindowsAPI;
 using System.Runtime.InteropServices;
+using NoMouseOnlyKeyboard.Interfaces;
 using static NoMouseOnlyKeyboard.WindowsAPI.User32;
+using Action = NoMouseOnlyKeyboard.Interfaces.Action;
 
 namespace NoMouseOnlyKeyboard.Services.ActionHandling
 {
@@ -21,7 +22,6 @@ namespace NoMouseOnlyKeyboard.Services.ActionHandling
             _keysBeingHeld = keysBeingHeld;
             _keysBeingHeld.IsActionKeyHeld[Action.MouseLeftButton].ValueChanged += HandleLeftMouseButtonStateChanged;
             _keysBeingHeld.IsActionKeyHeld[Action.MouseRightButton].ValueChanged += HandleRightMouseButtonStateChanged;
-
         }
 
         private void HandleRightMouseButtonStateChanged()

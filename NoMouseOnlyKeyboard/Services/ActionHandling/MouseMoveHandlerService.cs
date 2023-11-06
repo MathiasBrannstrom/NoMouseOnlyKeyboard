@@ -1,6 +1,7 @@
-﻿using NoMouseOnlyKeyboard.Services.Interfaces;
+﻿using NoMouseOnlyKeyboard.Interfaces;
 using NoMouseOnlyKeyboard.WindowsAPI;
 using static NoMouseOnlyKeyboard.WindowsAPI.User32;
+using Action = NoMouseOnlyKeyboard.Interfaces.Action;
 
 namespace NoMouseOnlyKeyboard.Services.ActionHandling
 {

@@ -1,4 +1,4 @@
-﻿using NoMouseOnlyKeyboard.Services.Interfaces;
+﻿using NoMouseOnlyKeyboard.Interfaces;
 
 namespace NoMouseOnlyKeyboard.Services.ActionHandling
 {
