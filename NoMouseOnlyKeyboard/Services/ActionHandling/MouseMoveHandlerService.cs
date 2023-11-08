@@ -76,7 +76,6 @@ namespace NoMouseOnlyKeyboard.Services.ActionHandling
                 {
                     speedModifier *= SpeedDownModifier;
                 }
-
                 if (_keysBeingHeld.IsActionKeyHeld[Action.MouseMoveUp].Value)
                 {
                     MoveMouse(0, -BaseSpeed * speedModifier);

@@ -8,5 +8,7 @@ namespace NoMouseOnlyKeyboard.Interfaces
         bool HasKeyMappingForKey(Key key);
 
         IEnumerable<Key> GetAllMappedKeys();
+
+        IEnumerable<Key> GetAllKeysForAction(Action action);
     }
 }

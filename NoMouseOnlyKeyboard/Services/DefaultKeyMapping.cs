@@ -25,6 +25,32 @@ namespace NoMouseOnlyKeyboard.Services
             { Key.LeftCtrl, Action.MouseSpeedDown },
             { Key.RightCtrl, Action.MouseSpeedDown }
         };
+        private Dictionary<Action, IEnumerable<Key>> _reverseMapping;
+
+        public DefaultKeyMapping()
+        {
+            _reverseMapping = ReverseKeyMapping(_keyActionMappings);
+        }
+
+        internal Dictionary<Action, IEnumerable<Key>> ReverseKeyMapping(Dictionary<Key, Action> keyMapping)
+        {
+            var result = new Dictionary<Action, List<Key>>();
+
+            foreach (var kvp in keyMapping)
+            {
+                if (!result.ContainsKey(kvp.Value))
+                {
+                    var list = new List<Key>() { kvp.Key };
+                    result.Add(kvp.Value, list);
+                }
+                else
+                {
+                    result[kvp.Value].Add(kvp.Key);
+                }
+            }
+
+            return result.ToDictionary(pair => pair.Key, pair => pair.Value.AsEnumerable());
+        }
 
         public bool HasKeyMappingForKey(Key key)
         {
@@ -44,6 +70,12 @@ namespace NoMouseOnlyKeyboard.Services
         public IEnumerable<Key> GetAllMappedKeys()
         {
             return _keyActionMappings.Keys;
+        }
+
+        public IEnumerable<Key> GetAllKeysForAction(Action action)
+        {
+            // No check for missing mappings here.
+            return _reverseMapping[action];
         }
     }
 }

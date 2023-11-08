@@ -9,7 +9,6 @@ namespace NoMouseOnlyKeyboard.Services
     {
         private readonly IKeyMapping _keyMapping;
         private bool _isDisposed;
-        private IEnumerable<Key> _relevantKeys;
 
         public Dictionary<Action, ValueHolder<bool>> IsActionKeyHeld { get; } = new Dictionary<Action, ValueHolder<bool>>();
 
@@ -21,8 +20,6 @@ namespace NoMouseOnlyKeyboard.Services
             {
                 IsActionKeyHeld[action] = new ValueHolder<bool>(false);
             }
-
-            _relevantKeys = _keyMapping.GetAllMappedKeys();
 
             StartLoop();
         }
@@ -39,9 +36,16 @@ namespace NoMouseOnlyKeyboard.Services
             //Probably should be done with cancellation token, but think this actually is perfectly fine too.
             while (!_isDisposed)
             {
-                foreach (var key in _relevantKeys)
+                foreach (Action action in Enum.GetValues(typeof(Action)))
                 {
-                    IsActionKeyHeld[_keyMapping.GetActionFromKey(key)].Value = Keyboard.IsKeyDown(key);
+                    var isAnyKeyForActionHeld = false;
+
+                    foreach(var key in _keyMapping.GetAllKeysForAction(action))
+                    {
+                        isAnyKeyForActionHeld |= Keyboard.IsKeyDown(key);
+                    }
+
+                    IsActionKeyHeld[action].Value = isAnyKeyForActionHeld;
                 }
 
                 Thread.Sleep(10);

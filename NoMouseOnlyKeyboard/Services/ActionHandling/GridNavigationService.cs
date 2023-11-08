@@ -30,7 +30,6 @@ namespace NoMouseOnlyKeyboard.Services.ActionHandling
                 //Move mouse to position here.
                 Console.WriteLine($"X: {result.Item1}, Y: {result.Item2}");
             });
-
         }
     }
 }
