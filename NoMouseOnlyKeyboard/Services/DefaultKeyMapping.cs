@@ -14,16 +14,16 @@ namespace NoMouseOnlyKeyboard.Services
             { Key.F16, Action.MouseMoveRight },
             { Key.F17, Action.MouseLeftButton },
             { Key.F18, Action.MouseRightButton },
-            { Key.F24, Action.MouseMiddleButton },
-            { Key.F20, Action.MouseDoubleClick },
-            { Key.F21, Action.MouseScrollUp },
-            { Key.F22, Action.MouseScrollDown },
+            { Key.F19, Action.MouseScrollUp },
+            { Key.F20, Action.MouseScrollDown },
+            //{ Key.F21, Action.MouseDoubleClick },
+            //{ Key.F22, Action.MouseMiddleButton },
             { Key.F23, Action.ShowUINavigationLabels },
-            { Key.F19, Action.ShowGridNavigationLabels },
-            { Key.LeftShift, Action.MouseSpeedUp },
-            { Key.RightShift, Action.MouseSpeedUp },
-            { Key.LeftCtrl, Action.MouseSpeedDown },
-            { Key.RightCtrl, Action.MouseSpeedDown }
+            { Key.F24, Action.ShowGridNavigationLabels },
+            { Key.F21, Action.MouseSpeedUp },
+            //{ Key.RightShift, Action.MouseSpeedUp },
+            { Key.F22, Action.MouseSpeedDown },
+            //{ Key.RightCtrl, Action.MouseSpeedDown }
         };
         private Dictionary<Action, IEnumerable<Key>> _reverseMapping;
 

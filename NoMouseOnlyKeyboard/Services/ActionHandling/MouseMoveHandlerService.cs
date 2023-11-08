@@ -24,6 +24,9 @@ namespace NoMouseOnlyKeyboard.Services.ActionHandling
             _keysBeingHeld.IsActionKeyHeld[Action.MouseMoveDown].ValueChanged += HandleMouseMoveKeyHeldChanged;
             _keysBeingHeld.IsActionKeyHeld[Action.MouseMoveLeft].ValueChanged += HandleMouseMoveKeyHeldChanged;
             _keysBeingHeld.IsActionKeyHeld[Action.MouseMoveRight].ValueChanged += HandleMouseMoveKeyHeldChanged;
+            _keysBeingHeld.IsActionKeyHeld[Action.MouseScrollUp].ValueChanged += HandleMouseMoveKeyHeldChanged;
+            _keysBeingHeld.IsActionKeyHeld[Action.MouseScrollDown].ValueChanged += HandleMouseMoveKeyHeldChanged;
+
 
         }
 
@@ -32,7 +35,9 @@ namespace NoMouseOnlyKeyboard.Services.ActionHandling
             return _keysBeingHeld.IsActionKeyHeld[Action.MouseMoveUp].Value ||
                    _keysBeingHeld.IsActionKeyHeld[Action.MouseMoveDown].Value ||
                    _keysBeingHeld.IsActionKeyHeld[Action.MouseMoveLeft].Value ||
-                   _keysBeingHeld.IsActionKeyHeld[Action.MouseMoveRight].Value;
+                   _keysBeingHeld.IsActionKeyHeld[Action.MouseMoveRight].Value ||
+                   _keysBeingHeld.IsActionKeyHeld[Action.MouseScrollUp].Value ||
+                   _keysBeingHeld.IsActionKeyHeld[Action.MouseScrollDown].Value;
 
 
         }
@@ -76,37 +81,43 @@ namespace NoMouseOnlyKeyboard.Services.ActionHandling
                 {
                     speedModifier *= SpeedDownModifier;
                 }
+                var mouseMoveSpeed = BaseSpeed * speedModifier;
+
                 if (_keysBeingHeld.IsActionKeyHeld[Action.MouseMoveUp].Value)
                 {
-                    MoveMouse(0, -BaseSpeed * speedModifier);
+                    MoveMouse(0, -mouseMoveSpeed);
                 }
                 if (_keysBeingHeld.IsActionKeyHeld[Action.MouseMoveLeft].Value)
                 {
-                    MoveMouse(-BaseSpeed * speedModifier, 0);
+                    MoveMouse(-mouseMoveSpeed, 0);
                 }
                 if (_keysBeingHeld.IsActionKeyHeld[Action.MouseMoveDown].Value)
                 {
-                    MoveMouse(0, BaseSpeed * speedModifier);
+                    MoveMouse(0, mouseMoveSpeed);
                 }
                 if (_keysBeingHeld.IsActionKeyHeld[Action.MouseMoveRight].Value)
                 {
-                    MoveMouse(BaseSpeed * speedModifier, 0);
+                    MoveMouse(mouseMoveSpeed, 0);
                 }
 
-                //if (IsKeyDown(VK_F17))
-                //{
-                //    // Scroll up when F17 key is held down
-                //    ScrollMouse(120);
-                //}
-                //if (IsKeyDown(VK_F18))
-                //{
-                //    // Scroll down when F18 key is held down
-                //    ScrollMouse(-120);
-                //}
+                int mouseScrollSpeed = (int)(15*speedModifier);
 
+                if (_keysBeingHeld.IsActionKeyHeld[Action.MouseScrollUp].Value)
+                {
+                    ScrollMouse(mouseScrollSpeed);
+                }
+                if (_keysBeingHeld.IsActionKeyHeld[Action.MouseScrollDown].Value)
+                {
+                    ScrollMouse(-mouseScrollSpeed);
+                }
 
                 Thread.Sleep(10);
             }
+        }
+
+        private void ScrollMouse(int scrollAmount)
+        {
+            mouse_event(0x0800, 0, 0, (uint)scrollAmount, 0);
         }
 
         private void MoveMouse(double deltaX, double deltaY)
@@ -118,6 +129,7 @@ namespace NoMouseOnlyKeyboard.Services.ActionHandling
 
             SetCursorPos(newX, newY);
         }
+
 
     }
 }

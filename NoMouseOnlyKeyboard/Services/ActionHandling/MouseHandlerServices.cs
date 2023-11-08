@@ -8,6 +8,7 @@ namespace NoMouseOnlyKeyboard.Services.ActionHandling
         {
             new MouseMoveHandlerService(keyListenerService);
             new MouseClickHandlerService(keyListenerService);
+            new MouseScrollHandlerService(keyListenerService);
         }
     }
 }
