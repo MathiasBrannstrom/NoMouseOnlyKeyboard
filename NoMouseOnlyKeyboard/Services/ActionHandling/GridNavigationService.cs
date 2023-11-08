@@ -20,6 +20,13 @@ namespace NoMouseOnlyKeyboard.Services.ActionHandling
             if (!_keyListenerService.IsActionKeyHeld[Action.ShowGridNavigationLabels].Value)
                 return;
 
+            Thread t = new Thread(ShowGridNavigationLabels);
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+        }
+
+        private void ShowGridNavigationLabels()
+        {
             var task = _uiService.ShowGridNavigationLabels();
             task.ContinueWith(t =>
             {

@@ -45,7 +45,14 @@ namespace NoMouseOnlyKeyboard.Services
                         isAnyKeyForActionHeld |= Keyboard.IsKeyDown(key);
                     }
 
+                    if (IsActionKeyHeld[action].Value != isAnyKeyForActionHeld)
+                    {
+                        Console.WriteLine(action.ToString() + (isAnyKeyForActionHeld? " pressed." : " released."));
+                    }
+
                     IsActionKeyHeld[action].Value = isAnyKeyForActionHeld;
+
+                    
                 }
 
                 Thread.Sleep(10);
