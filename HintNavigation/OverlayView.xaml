@@ -1,8 +1,8 @@
 ﻿<local:ForegroundWindow
-    x:Class="UIImplementationWindowsWPF.OverlayView"
+    x:Class="HintNavigation.OverlayView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:UIImplementationWindowsWPF"
+    xmlns:local="clr-namespace:HintNavigation"
     WindowStyle="None"
     ResizeMode="NoResize"
     ShowInTaskbar="False"
@@ -24,7 +24,7 @@
         <SolidColorBrush Color="Transparent" />
     </local:ForegroundWindow.Background>
     <Grid x:Name="layoutGrid" Background="Pink" MinHeight="100" MinWidth="100">
-        <!--<TextBox x:Name="MatchStringControl" Text="{Binding MatchString, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" Width="50" VerticalAlignment="Bottom" Background="Transparent" Foreground="White" />
+        <TextBox x:Name="MatchStringControl" Text="{Binding MatchString, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" Width="50" VerticalAlignment="Bottom" Background="Transparent" Foreground="White" />
         <ItemsControl ItemsSource="{Binding Hints}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -61,7 +61,7 @@
                     </Grid>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
-        </ItemsControl>-->
+        </ItemsControl>
     </Grid>
 </local:ForegroundWindow>
 

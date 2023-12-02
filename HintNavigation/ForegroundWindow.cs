@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Interop;
 using System.Windows.Media;
 
-namespace UIImplementationWindowsWPF
+namespace HintNavigation
 {
     /// <summary>
     /// Window that is always foreground, and closes when it's not
@@ -12,7 +12,6 @@ namespace UIImplementationWindowsWPF
     /// </summary>
     public class ForegroundWindow : Window
     {
-        private bool _closing;
         private bool _initialized;
 
         protected override void OnRender(DrawingContext drawingContext)
@@ -30,21 +29,22 @@ namespace UIImplementationWindowsWPF
             base.OnRender(drawingContext);
         }
 
-        protected override void OnDeactivated(EventArgs e)
-        {
-            // We could have lost focus because we're already closing, make sure this doesn't call close twice
-            if (_initialized && !_closing)
-            {
-                Close();
-            }
-            base.OnDeactivated(e);
-        }
+        //protected override void OnDeactivated(EventArgs e)
+        //{
+        //    // We could have lost focus because we're already closing, make sure this doesn't call close twice
+        //    if (_initialized)
+        //    {
+                
+        //        //Close();
+        //    }
+        //    base.OnDeactivated(e);
+        //}
 
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            _closing = true;
-            base.OnClosing(e);
-        }
+        //protected override void OnClosing(CancelEventArgs e)
+        //{
+        //    _closing = true;
+        //    base.OnClosing(e);
+        //}
 
         /// <summary>
         /// Forces the window to the foreground by attaching to the foreground window thread

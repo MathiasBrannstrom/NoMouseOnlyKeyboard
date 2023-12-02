@@ -1,19 +1,34 @@
-﻿using NoMouseOnlyKeyboard.Interfaces;
+﻿using HintNavigation;
+using NoMouseOnlyKeyboard.Interfaces;
 
 namespace UIImplementationWindowsWPF
 {
     public class UIService : IUIService
     {
-        public Task<Tuple<int, int>> ShowGridNavigationLabels()
-        {
-            var view = new OverlayView
-            {
-                //DataContext = vm
-            };
-            //vm.CloseOverlay = () => view.Close();
-            view.ShowDialog();
+        private GridNavigationViewModel _gridNavigationViewModel;
 
-            return Task.FromResult(new Tuple<int, int>(13, 37));
+        public UIService() 
+        {
+            _gridNavigationViewModel = new GridNavigationViewModel();
+
+            Thread t = new Thread(CreateWindow);
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+        }
+
+        private void CreateWindow()
+        {
+            var view = new GridNavigationView
+            {
+                DataContext = _gridNavigationViewModel
+            };
+
+            view.ShowDialog();
+        }
+
+        public Task<Point> ShowGridNavigationLabels()
+        {
+            return _gridNavigationViewModel.GetSelectedPosition();
         }
     }
 }

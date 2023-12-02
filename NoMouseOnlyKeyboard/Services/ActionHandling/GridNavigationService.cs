@@ -1,5 +1,6 @@
 ﻿using NoMouseOnlyKeyboard.Interfaces;
 using Action = NoMouseOnlyKeyboard.Interfaces.Action;
+using static NoMouseOnlyKeyboard.WindowsAPI.User32;
 
 namespace NoMouseOnlyKeyboard.Services.ActionHandling
 {
@@ -20,9 +21,7 @@ namespace NoMouseOnlyKeyboard.Services.ActionHandling
             if (!_keyListenerService.IsActionKeyHeld[Action.ShowGridNavigationLabels].Value)
                 return;
 
-            Thread t = new Thread(ShowGridNavigationLabels);
-            t.SetApartmentState(ApartmentState.STA);
-            t.Start();
+            ShowGridNavigationLabels();
         }
 
         private void ShowGridNavigationLabels()
@@ -33,10 +32,18 @@ namespace NoMouseOnlyKeyboard.Services.ActionHandling
                 if (t.IsCanceled || t.IsFaulted)
                     return;
 
-                var result = t.Result;
-                //Move mouse to position here.
-                Console.WriteLine($"X: {result.Item1}, Y: {result.Item2}");
+                MoveMouseToPoint(t.Result);
             });
+        }
+
+
+        private void MoveMouseToPoint(Point p)
+        {
+            var x = (int)Math.Round(p.X);
+            var y = (int)Math.Round(p.Y);
+
+            Console.WriteLine($"Move mouse to {x}, {y}");
+            SetCursorPos(x, y);
         }
     }
 }

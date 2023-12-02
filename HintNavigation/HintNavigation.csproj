@@ -8,7 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Utilities\Utilities.csproj" />
+    <ProjectReference Include="..\NoMouseOnlyKeyboard.Interfaces\NoMouseOnlyKeyboard.Interfaces.csproj" />
+    <ProjectReference Include="..\WindowsAPI\WindowsAPI.csproj" />
   </ItemGroup>
 
 </Project>
