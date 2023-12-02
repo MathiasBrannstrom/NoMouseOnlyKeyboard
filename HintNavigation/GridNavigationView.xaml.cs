@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace HintNavigation
 {
@@ -20,10 +21,12 @@ namespace HintNavigation
     public partial class GridNavigationView
     {
         private GridNavigationViewModel _viewModel;
+        private Dispatcher _dispatcher;
 
         public GridNavigationView()
         {
             InitializeComponent();
+            _dispatcher = Dispatcher.CurrentDispatcher;
         }
 
         
@@ -37,13 +40,10 @@ namespace HintNavigation
                 _viewModel.Visible = false;
                 return;
             }
-
-            foreach(var item in _viewModel.GridNavigationItems)
-                if(e.Key.ToString()== item.Key)
-                {
-                    _viewModel.SelectGridNavigationItem(item);
-                }                    
         }
+
+
+
 
         protected override void OnDeactivated(EventArgs e)
         {
@@ -57,11 +57,19 @@ namespace HintNavigation
         {
             _viewModel = ((GridNavigationViewModel)DataContext);
         }
-
+       
         private void Canvas_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             var canvas = (Canvas)sender;
             _viewModel.UpdateSizeOfGrid(canvas.ActualWidth, canvas.ActualHeight);
+        }
+
+        private void MatchStringControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+
+            MatchStringControl.Focus();
+            MatchStringControl.Text = "";
+            Keyboard.Focus(MatchStringControl);
         }
     }
 }

@@ -77,6 +77,22 @@ namespace HintNavigation
                 }
             }
         }
+
+
+        private bool _isActive = true;
+        public bool Active
+        {
+            get { return _isActive; }
+            set
+            {
+                if (_isActive != value)
+                {
+                    _isActive = value;
+                    NotifyOfPropertyChange();
+                }
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void NotifyOfPropertyChange([CallerMemberName] string name = null)
@@ -128,8 +144,8 @@ namespace HintNavigation
 
         internal void UpdateSizeOfGrid(double actualWidth, double actualHeight)
         {
-            var rows = 2;
-            var columns = 3;
+            var rows = 14;
+            var columns = 14;
             var labels = HintLabelGeneration.GenerateHintStrings(rows * columns);
 
             _items.Clear();
@@ -144,6 +160,33 @@ namespace HintNavigation
                 {
                     _items.Add(new GridNavigationItem {Top=r*(height+margin)+margin, Left = c*(width+margin)+margin, Height=height, Width=width, Key = labels[r * columns + c] });
                 }
+        }
+
+        public string MatchString
+        {
+            set
+            {
+                if (value.Length > 0)
+                {
+                    foreach (var x in GridNavigationItems)
+                    {
+                        x.Active = false;
+                    }
+                }
+                
+                var matching = GridNavigationItems.Where(x => x.Key.StartsWith(value, StringComparison.OrdinalIgnoreCase)).ToArray();
+
+                if (matching.Count() == 1)
+                {
+                    SelectGridNavigationItem(matching[0]);
+                    return;
+                }
+
+                foreach (var x in matching)
+                {
+                    x.Active = true;
+                }
+            }
         }
 
         internal void SelectGridNavigationItem(GridNavigationItem item)

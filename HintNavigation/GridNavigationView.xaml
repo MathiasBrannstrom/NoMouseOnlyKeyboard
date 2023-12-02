@@ -43,6 +43,16 @@
                         <Border.Background>
                             <SolidColorBrush Color="#339E9E9E"/>
                         </Border.Background>
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Opacity" Value="1"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Active}" Value="False">
+                                        <Setter Property="Opacity" Value="0.2"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
                         <Grid>
                             <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Key}" FontSize="30" Foreground="White"/>
                         </Grid>
@@ -50,6 +60,7 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+        <TextBox x:Name="MatchStringControl" Text="{Binding MatchString, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" VerticalAlignment="Bottom" Height="120" FontSize="20" IsVisibleChanged="MatchStringControl_IsVisibleChanged"/>
     </Grid>
 </local:ForegroundWindow>
 

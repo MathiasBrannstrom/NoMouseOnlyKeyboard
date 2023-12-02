@@ -39,7 +39,7 @@ namespace HintNavigation
             {
                 for (var i = 0; i < shortHintCount; ++i)
                 {
-                    hintStrings.Add(new string(NumberToHintString(i + longHintPrefixCount, hintCharacters, digitsNeeded - 1).Reverse().ToArray()));
+                    hintStrings.Add(new string(NumberToHintString(i + longHintPrefixCount, hintCharacters, digitsNeeded - 1).ToArray()));
                 }
             }
 
