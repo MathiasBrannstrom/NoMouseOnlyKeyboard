@@ -11,7 +11,7 @@ namespace NoMouseOnlyKeyboard.Services.ActionHandling
         private CancellationTokenSource _cancellationTokenSource;
 
         // Define the base speed and speed modifiers
-        const double BaseSpeed = 5;
+        const double BaseSpeed = 6.5;
         const double FastSpeed = 25;
         const double SlowSpeed = 2.5;
 

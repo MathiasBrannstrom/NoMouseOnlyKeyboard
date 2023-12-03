@@ -66,7 +66,7 @@ namespace HintNavigation
 
         private void MatchStringControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-
+            Activate();
             MatchStringControl.Focus();
             MatchStringControl.Text = "";
             Keyboard.Focus(MatchStringControl);
