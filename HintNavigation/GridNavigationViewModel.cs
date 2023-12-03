@@ -334,11 +334,10 @@ namespace HintNavigation
                 { "", primaryRegion }
             };
 
-            var regionCharacters = new[] { "L", "D" }; // Should be moved somewhere.
             var i = 0;
             foreach (var region in otherRegions)
             {
-                _regions.Add(regionCharacters[i++], region);
+                _regions.Add(HintLabelGeneration.SecondaryCharacters[i++].ToString(), region);
             }
 
             UpdateSizeOfGrid();

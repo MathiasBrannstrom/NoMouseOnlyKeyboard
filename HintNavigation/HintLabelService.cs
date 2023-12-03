@@ -6,13 +6,15 @@ namespace HintNavigation
     {
         public static char[] LabelCharacters = new[] { 'T', 'N', 'R', 'E', 'S', 'I', 'A', 'O', 'G', 'H', 'J', 'V', 'M', 'C' };
 
-        /// <summary>
-        /// Gets available hint strings
-        /// </summary>
-        /// <remarks>Adapted from vimium to give a consistent experience, see https://github.com/philc/vimium/blob/master/content_scripts/link_hints.js </remarks>
-        /// <param name="hintCount">The number of hints</param>
-        /// <returns>A list of hint strings</returns>
-        public static IList<string> GenerateHintStrings(int hintCount)
+        public static char[] SecondaryCharacters = new[] { 'L', 'D' };
+
+    /// <summary>
+    /// Gets available hint strings
+    /// </summary>
+    /// <remarks>Adapted from vimium to give a consistent experience, see https://github.com/philc/vimium/blob/master/content_scripts/link_hints.js </remarks>
+    /// <param name="hintCount">The number of hints</param>
+    /// <returns>A list of hint strings</returns>
+    public static IList<string> GenerateHintStrings(int hintCount)
         {
             var hintStrings = new List<string>();
             if (hintCount <= 0)
