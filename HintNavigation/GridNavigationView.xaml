@@ -40,7 +40,7 @@
                 <DataTemplate>
                     <Border CornerRadius="5" Width="{Binding Width}" Height="{Binding Height}">
                         <Border.Background>
-                            <SolidColorBrush Color="#339E9E9E"/>
+                            <SolidColorBrush Color="#557E7E7E"/>
                         </Border.Background>
                         <Border.Style>
                             <Style TargetType="Border">
@@ -53,6 +53,26 @@
                             </Style>
                         </Border.Style>
                         <Grid>
+                            <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Key}" FontSize="30" Foreground="Black">
+                                <Label.RenderTransform>
+                                    <TranslateTransform X="-2"/>
+                                </Label.RenderTransform>
+                            </Label>
+                            <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Key}" FontSize="30" Foreground="Black">
+                                <Label.RenderTransform>
+                                    <TranslateTransform X="2"/>
+                                </Label.RenderTransform>
+                            </Label>
+                            <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Key}" FontSize="30" Foreground="Black">
+                                <Label.RenderTransform>
+                                    <TranslateTransform Y="-2"/>
+                                </Label.RenderTransform>
+                            </Label>
+                            <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Key}" FontSize="30" Foreground="Black">
+                                <Label.RenderTransform>
+                                    <TranslateTransform Y="2"/>
+                                </Label.RenderTransform>
+                            </Label>
                             <Label HorizontalAlignment="Center" VerticalAlignment="Center" Content="{Binding Key}" FontSize="30" Foreground="White"/>
                         </Grid>
                     </Border>
