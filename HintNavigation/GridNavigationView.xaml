@@ -14,7 +14,7 @@
     <local:ForegroundWindow.Background>
         <SolidColorBrush Color="Transparent" />
     </local:ForegroundWindow.Background>
-    <Grid>
+    <Grid Background="#01FFFFFF">
         <Grid.Style>
             <Style TargetType="Grid">
                 <Setter Property="Visibility" Value="Hidden"/>
@@ -60,7 +60,9 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <TextBox x:Name="MatchStringControl" Text="{Binding MatchString, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" VerticalAlignment="Bottom" Height="120" FontSize="20" IsVisibleChanged="MatchStringControl_IsVisibleChanged"/>
+        <TextBox x:Name="MatchStringControl" Text="{Binding MatchString, UpdateSourceTrigger=PropertyChanged, Mode=OneWayToSource}" VerticalAlignment="Bottom" Opacity="0" Focusable="True" 
+                 IsVisibleChanged="MatchStringControl_IsVisibleChanged" IsKeyboardFocusedChanged="MatchStringControl_IsKeyboardFocusedChanged" 
+                 PreviewLostKeyboardFocus="MatchStringControl_PreviewLostKeyboardFocus"/>
     </Grid>
 </local:ForegroundWindow>
 

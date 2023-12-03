@@ -11,9 +11,9 @@ namespace NoMouseOnlyKeyboard.Services.ActionHandling
         private CancellationTokenSource _cancellationTokenSource;
 
         // Define the base speed and speed modifiers
-        const double BaseSpeed = 8;
-        const double SpeedUpModifier = 3.0;
-        const double SpeedDownModifier = 0.3;
+        const double BaseSpeed = 5;
+        const double FastSpeed = 25;
+        const double SlowSpeed = 2.5;
 
 
         public MouseMoveHandlerService(IKeyListenerService keysBeingHeld)
@@ -71,17 +71,17 @@ namespace NoMouseOnlyKeyboard.Services.ActionHandling
                     return;
 
 
-                double speedModifier = 1; // Default speed modifier
+                var mouseMoveSpeed = BaseSpeed;
+
 
                 if (_keysBeingHeld.IsActionKeyHeld[Action.MouseSpeedUp].Value)
                 {
-                    speedModifier *= SpeedUpModifier;
+                    mouseMoveSpeed = FastSpeed;
                 }
                 if (_keysBeingHeld.IsActionKeyHeld[Action.MouseSpeedDown].Value)
                 {
-                    speedModifier *= SpeedDownModifier;
+                    mouseMoveSpeed = SlowSpeed;
                 }
-                var mouseMoveSpeed = BaseSpeed * speedModifier;
 
                 if (_keysBeingHeld.IsActionKeyHeld[Action.MouseMoveUp].Value)
                 {
@@ -100,7 +100,7 @@ namespace NoMouseOnlyKeyboard.Services.ActionHandling
                     MoveMouse(mouseMoveSpeed, 0);
                 }
 
-                int mouseScrollSpeed = (int)(15*speedModifier);
+                int mouseScrollSpeed = (int)(mouseMoveSpeed*3); 
 
                 if (_keysBeingHeld.IsActionKeyHeld[Action.MouseScrollUp].Value)
                 {

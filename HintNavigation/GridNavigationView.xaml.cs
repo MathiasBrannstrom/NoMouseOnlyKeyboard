@@ -71,5 +71,21 @@ namespace HintNavigation
             MatchStringControl.Text = "";
             Keyboard.Focus(MatchStringControl);
         }
+
+        private void MatchStringControl_IsKeyboardFocusedChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if(Keyboard.FocusedElement != MatchStringControl)
+            {
+                _viewModel.Visible = false;
+            }
+            //Console.WriteLine($"Currently focused element: {Keyboard.FocusedElement}");
+        }
+
+        private void MatchStringControl_PreviewLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        {
+            // Don't allow losing focus while overlay is visible.
+            if(_viewModel.Visible)
+                e.Handled = true;
+        }
     }
 }
