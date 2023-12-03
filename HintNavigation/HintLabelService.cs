@@ -19,7 +19,7 @@ namespace HintNavigation
             }
 
             var hintCharacters = new[] { 'A', 'S', 'R', 'T', 'G' , 'C', 'V', 'H', 'N', 'E', 'I', 'O', 'J', 'M'};
-            var secondaryCharacters = new[] { 'L', 'D' }; // For future use. (selecting screen etc.)
+            
 
             var digitsNeeded = (int)Math.Ceiling(Math.Log(hintCount) / Math.Log(hintCharacters.Length));
 

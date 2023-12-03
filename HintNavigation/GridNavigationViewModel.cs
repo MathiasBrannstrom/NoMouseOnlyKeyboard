@@ -1,8 +1,11 @@
 ﻿using NoMouseOnlyKeyboard.Interfaces;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Drawing;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Utilities;
+using Point = NoMouseOnlyKeyboard.Interfaces.Point;
 
 namespace HintNavigation
 {
@@ -93,6 +96,8 @@ namespace HintNavigation
             }
         }
 
+        public Rectangle Region { get; internal set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void NotifyOfPropertyChange([CallerMemberName] string name = null)
@@ -102,35 +107,114 @@ namespace HintNavigation
 
         public Point GetCenter()
         {
-            return new Point() { X = (Left + Width / 2), Y = Top + Height / 2};
+            return new Point() { X = Region.Left + (Left + Width / 2), Y = Region.Top + Top + Height / 2};
         }
     }
 
-    public class GridNavigationViewModel : INotifyPropertyChanged
+    public class RegionViewModel
     {
-        private ObservableCollection<GridNavigationItem> _items;
-
-        public IEnumerable<GridNavigationItem> GridNavigationItems => _items;
-
-        private bool _visible;
-        private TaskCompletionSource<Point>? _taskCompletionSource;
-
-        public bool Visible
+        public IEnumerable<GridNavigationItem> GridNavigationItems { get; set; }
+        private double _top;
+        public double Top
         {
-            get { return _visible; }
+            get { return _top; }
             set
             {
-                if (_visible != value)
+                if (_top != value)
                 {
-                    _visible = value;
+                    _top = value;
                     NotifyOfPropertyChange();
                 }
             }
         }
 
+        private double _left;
+        public double Left
+        {
+            get { return _left; }
+            set
+            {
+                if (_left != value)
+                {
+                    _left = value;
+                    NotifyOfPropertyChange();
+                }
+            }
+        }
+
+        private double _width;
+        public double Width
+        {
+            get { return _width; }
+            set
+            {
+                if (_width != value)
+                {
+                    _width = value;
+                    NotifyOfPropertyChange();
+                }
+            }
+        }
+
+        private double _height;
+
+        public double Height
+        {
+            get { return _height; }
+            set
+            {
+                if (_height != value)
+                {
+                    _height = value;
+                    NotifyOfPropertyChange();
+                }
+            }
+        }
+
+        //private bool _isMainRegion;
+        //public bool IsMainRegion
+        //{
+        //    get { return _isMainRegion; }
+        //    set
+        //    {
+        //        if (_isMainRegion != value)
+        //        {
+        //            _isMainRegion = value;
+        //            NotifyOfPropertyChange();
+        //        }
+        //    }
+        //}
+
+        public ValueHolder<string> MatchString { get; set; }
+
+        public ValueHolder<bool> Visible { get; set; }
+        
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void NotifyOfPropertyChange([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+    }
+
+    public class GridNavigationViewModel : INotifyPropertyChanged
+    {
+
+
+        private bool _visible;
+        private TaskCompletionSource<Point>? _taskCompletionSource;
+        private Dictionary<string, Rectangle> _regions;
+
+        public ValueHolder<bool> Visible = new ValueHolder<bool>();
+
+        public List<RegionViewModel> RegionViewModels { get; private set; }
+
+        private ValueHolder<string> _matchString = new ValueHolder<string>();
+
         public GridNavigationViewModel()
         {
-            _items = new ObservableCollection<GridNavigationItem>();
+            RegionViewModels = new List<RegionViewModel>();
+            _matchString.ValueChanged += NewMatchString;
         }
 
         public System.Action CloseOverlay { get; set; }
@@ -142,50 +226,61 @@ namespace HintNavigation
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        internal void UpdateSizeOfGrid(double actualWidth, double actualHeight)
+        private void NewMatchString()
         {
-            var rows = 14;
-            var columns = 14;
-            var labels = HintLabelGeneration.GenerateHintStrings(rows * columns);
-
-            _items.Clear();
-
-            var margin = 10.0;
-
-            var width = (actualWidth-margin*(columns+1)) / columns;
-            var height = (actualHeight-margin*(rows+1)) / rows;
-
-            for (var r = 0; r < rows; r++)
-                for (var c = 0; c < columns; c++)
+            var allItems = RegionViewModels.SelectMany(r => r.GridNavigationItems);
+            var value = _matchString.Value;
+            if (value.Length > 0)
+            {
+                foreach (var x in allItems)
                 {
-                    _items.Add(new GridNavigationItem {Top=r*(height+margin)+margin, Left = c*(width+margin)+margin, Height=height, Width=width, Key = labels[r * columns + c] });
+                    x.Active = false;
                 }
+            }
+
+            var matching = allItems.Where(x => x.Key.StartsWith(value, StringComparison.OrdinalIgnoreCase)).ToArray();
+
+            if (matching.Count() == 1)
+            {
+                SelectGridNavigationItem(matching[0]);
+                return;
+            }
+
+            foreach (var x in matching)
+            {
+                x.Active = true;
+            }
         }
 
-        public string MatchString
+        internal void UpdateSizeOfGrid()
         {
-            set
+            RegionViewModels.Clear();
+            foreach (var region in  _regions)
             {
-                if (value.Length > 0)
-                {
-                    foreach (var x in GridNavigationItems)
+                var rows = 14;
+                var columns = 14;
+                var labels = HintLabelGeneration.GenerateHintStrings(rows * columns);
+   
+                var margin = 10.0;
+
+                var width = (region.Value.Width - margin * (columns + 1)) / columns;
+                var height = (region.Value.Height - margin * (rows + 1)) / rows;
+
+                var items = new ObservableCollection<GridNavigationItem>();
+                for (var r = 0; r < rows; r++)
+                    for (var c = 0; c < columns; c++)
                     {
-                        x.Active = false;
+                        items.Add(new GridNavigationItem { Top = r * (height + margin) + margin, Left = c * (width + margin) + margin, Height = height, Width = width, Key = region.Key + labels[r * columns + c], Region = region.Value });
                     }
-                }
-                
-                var matching = GridNavigationItems.Where(x => x.Key.StartsWith(value, StringComparison.OrdinalIgnoreCase)).ToArray();
 
-                if (matching.Count() == 1)
+                var regionViewModel = new RegionViewModel { GridNavigationItems = items, Top = region.Value.Top, Left = region.Value.Left, Height = region.Value.Height, Width = region.Value.Width, Visible = Visible };
+                if(region.Key == "")
                 {
-                    SelectGridNavigationItem(matching[0]);
-                    return;
+                    regionViewModel.MatchString = _matchString;
                 }
 
-                foreach (var x in matching)
-                {
-                    x.Active = true;
-                }
+                RegionViewModels.Add(regionViewModel);
+                //return;
             }
         }
 
@@ -194,7 +289,7 @@ namespace HintNavigation
             var center = item.GetCenter();
             if(_taskCompletionSource != null)
             {
-                Visible = false;
+                Visible.Value = false;
                 _taskCompletionSource.SetResult(center);
                 _taskCompletionSource = null;
             }
@@ -202,7 +297,7 @@ namespace HintNavigation
 
         public Task<Point> GetSelectedPosition()
         {
-            Visible = true;
+            Visible.Value = true;
             if (_taskCompletionSource != null)
             {
                 _taskCompletionSource.TrySetCanceled();
@@ -213,7 +308,25 @@ namespace HintNavigation
 
             return _taskCompletionSource.Task;
         }
+
+        public void UpdateAvailableRegions(Rectangle primaryRegion, IEnumerable<Rectangle> otherRegions)
+        {
+            _regions = new Dictionary<string, Rectangle>
+            {
+                { "", primaryRegion }
+            };
+
+            var regionCharacters = new[] { "L", "D" }; // Should be moved somewhere.
+            var i = 0;
+            foreach (var region in otherRegions)
+            {
+                _regions.Add(regionCharacters[i++], region);
+            }
+
+            UpdateSizeOfGrid();
+        }
     }
+
 
     //public class HintViewModel : INotifyPropertyChanged
     //{
