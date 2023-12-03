@@ -4,6 +4,8 @@ namespace HintNavigation
 {
     public static class HintLabelGeneration
     {
+        public static char[] LabelCharacters = new[] { 'T', 'N', 'R', 'E', 'S', 'I', 'A', 'O', 'G', 'H', 'J', 'V', 'M', 'C' };
+
         /// <summary>
         /// Gets available hint strings
         /// </summary>
@@ -17,20 +19,18 @@ namespace HintNavigation
             {
                 return hintStrings;
             }
-
-            var hintCharacters = new[] { 'A', 'S', 'R', 'T', 'G' , 'C', 'V', 'H', 'N', 'E', 'I', 'O', 'J', 'M'};
             
 
-            var digitsNeeded = (int)Math.Ceiling(Math.Log(hintCount) / Math.Log(hintCharacters.Length));
+            var digitsNeeded = (int)Math.Ceiling(Math.Log(hintCount) / Math.Log(LabelCharacters.Length));
 
-            var wholeHintCount = (int)Math.Pow(hintCharacters.Length, digitsNeeded);
-            var shortHintCount = (wholeHintCount - hintCount) / hintCharacters.Length;
+            var wholeHintCount = (int)Math.Pow(LabelCharacters.Length, digitsNeeded);
+            var shortHintCount = (wholeHintCount - hintCount) / LabelCharacters.Length;
             var longHintCount = hintCount - shortHintCount;
 
-            var longHintPrefixCount = wholeHintCount / hintCharacters.Length - shortHintCount;
+            var longHintPrefixCount = wholeHintCount / LabelCharacters.Length - shortHintCount;
             for (int i = 0, j = 0; i < longHintCount; ++i, ++j)
             {
-                hintStrings.Add(new string(NumberToHintString(j, hintCharacters, digitsNeeded).Reverse().ToArray()));
+                hintStrings.Add(new string(NumberToHintString(j, LabelCharacters, digitsNeeded).Reverse().ToArray()));
                 if (longHintPrefixCount > 0 && (i + 1) % longHintPrefixCount == 0)
                 {
                     j += shortHintCount;
@@ -41,7 +41,7 @@ namespace HintNavigation
             {
                 for (var i = 0; i < shortHintCount; ++i)
                 {
-                    hintStrings.Add(new string(NumberToHintString(i + longHintPrefixCount, hintCharacters, digitsNeeded - 1).ToArray()));
+                    hintStrings.Add(new string(NumberToHintString(i + longHintPrefixCount, LabelCharacters, digitsNeeded - 1).ToArray()));
                 }
             }
 

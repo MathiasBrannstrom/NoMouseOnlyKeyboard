@@ -257,21 +257,40 @@ namespace HintNavigation
             RegionViewModels.Clear();
             foreach (var region in  _regions)
             {
-                var rows = 14;
-                var columns = 14;
-                var labels = HintLabelGeneration.GenerateHintStrings(rows * columns);
-   
+                var rows = 3;
+                var columns = 3;
                 var margin = 10.0;
+
+                var items = new ObservableCollection<GridNavigationItem>();
 
                 var width = (region.Value.Width - margin * (columns + 1)) / columns;
                 var height = (region.Value.Height - margin * (rows + 1)) / rows;
-
-                var items = new ObservableCollection<GridNavigationItem>();
                 for (var r = 0; r < rows; r++)
                     for (var c = 0; c < columns; c++)
                     {
-                        items.Add(new GridNavigationItem { Top = r * (height + margin) + margin, Left = c * (width + margin) + margin, Height = height, Width = width, Key = region.Key + labels[r * columns + c], Region = region.Value });
+                        var key = HintLabelGeneration.LabelCharacters[r * columns + c];
+                        var top = r * (height + margin) + margin;
+                        var left = c * (width + margin) + margin;
+
+                        var width2 = (width - margin * (columns + 1)) / columns;
+                        var height2 = (height - margin * (rows + 1)) / rows;
+
+                        // Do recursively for support of more levels.
+                        for (var r2 = 0; r2 < rows; r2++)
+                            for (var c2 = 0; c2 < columns; c2++)
+                            {
+                                var key2 = HintLabelGeneration.LabelCharacters[r2*columns + c2];
+                                items.Add(new GridNavigationItem { Top = top + r2*(height2+margin) + margin, Left = left + c2*(width2+margin)+margin, 
+                                    Height = height2, Width = width2, Key = region.Key + key + key2, Region = region.Value });
+                            }
                     }
+                //var labels = HintLabelGeneration.GenerateHintStrings(rows * columns);
+   
+
+                
+
+                
+                
 
                 var regionViewModel = new RegionViewModel { GridNavigationItems = items, Top = region.Value.Top, Left = region.Value.Left, Height = region.Value.Height, Width = region.Value.Width, Visible = Visible };
                 if(region.Key == "")
@@ -280,7 +299,6 @@ namespace HintNavigation
                 }
 
                 RegionViewModels.Add(regionViewModel);
-                //return;
             }
         }
 
